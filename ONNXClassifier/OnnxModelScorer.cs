@@ -16,11 +16,14 @@ namespace ONNXClassifier
         private readonly string modelLocation;
         private readonly MLContext mlContext;
 
+        private readonly ITransformer model;
+
         public OnnxModelScorer(string imagesFolder, string modelLocation, MLContext mlContext)
         {
             this.imagesFolder = imagesFolder;
             this.modelLocation = modelLocation;
             this.mlContext = mlContext;
+            this.model = LoadModel(modelLocation);
         }
 
         public struct ImageNetSettings
@@ -88,7 +91,7 @@ namespace ONNXClassifier
         public IEnumerable<ResultTransformed> Score(IDataView data)
         {
             Stopwatch stopwatch = Stopwatch.StartNew(); 
-            var model = LoadModel(modelLocation);
+      
             var result= PredictDataUsingModel(data, model);
             stopwatch.Stop();
             Console.WriteLine("Execution time in "+stopwatch.ElapsedMilliseconds + " ms");

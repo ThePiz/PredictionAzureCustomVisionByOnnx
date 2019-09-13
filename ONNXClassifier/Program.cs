@@ -30,15 +30,18 @@ namespace ONNXClassifier
 
                 // Create instance of model scorer
                 var modelScorer = new OnnxModelScorer(imagesFolder, modelFilePath, mlContext);
+                for (int i = 0; i < 10; i++)
+                {
+                    // Use model to score data
+                    var probabilities = modelScorer.Score(imageDataView);
+                    Console.WriteLine(Environment.NewLine);
 
-                // Use model to score data
-                var probabilities = modelScorer.Score(imageDataView);
-                Console.WriteLine(Environment.NewLine);
+                    foreach (var prob in probabilities)
+                        Console.WriteLine(prob.ToString());
 
-                foreach(var prob in probabilities)
-                    Console.WriteLine(prob.ToString());
-
-                Console.WriteLine("Digit any key for exit");
+                    Console.WriteLine("Digit any key for exit");
+                }
+               
                 Console.ReadLine();
 
             }
